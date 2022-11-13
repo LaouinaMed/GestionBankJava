@@ -1,0 +1,343 @@
+package service;
+import  entities.*;
+import  service.*;
+import java.util.*;
+
+public class BankService {
+	
+	private BankAgency bankAgency ;
+	//private AccountService accountsBankAgency;
+	
+	public BankService() {}
+	
+	public void SetBankAgency(BankAgency bankAgency)
+	{
+		this.bankAgency = bankAgency;
+	}
+	
+	public BankAgency getBankAgency()
+	{
+		return bankAgency;
+		
+	}
+	
+	public boolean chercherCompte2( int id)
+	{
+		for(int i = 0 ; i < this.getBankAgency().getAgencyAccount().length ; i++)
+		{
+			if(this.getBankAgency().getAgencyAccount()[i] != null && this.getBankAgency().getAgencyAccount()[i].getId() == id)
+				return true;
+		}
+		return false;
+	}
+	
+	
+	public boolean chercherClient( int id)
+	{
+		for(int i = 0 ; i < this.getBankAgency().getAgencyClient().length ; i++)
+		{
+			if(this.getBankAgency().getAgencyClient()[i] != null && this.getBankAgency().getAgencyClient()[i].getId() == id)
+				return true;
+		}
+		return false;
+	}
+	
+	public Account chercherCompteObjet( int id)
+	{
+		for(int i = 0 ; i < this.getBankAgency().getAgencyAccount().length ; i++)
+		{
+			if(this.getBankAgency().getAgencyAccount()[i] != null && this.getBankAgency().getAgencyAccount()[i].getId() == id)
+				return this.getBankAgency().getAgencyAccount()[i];
+		}
+		return null;
+	}
+	
+	public Client chercherClientObjet( int id)
+	{
+		for(int i = 0 ; i < this.getBankAgency().getAgencyClient().length ; i++)
+		{
+			if(this.getBankAgency().getAgencyClient()[i] != null && this.getBankAgency().getAgencyClient()[i].getId() == id)
+				return this.getBankAgency().getAgencyClient()[i];
+		}
+		return null;
+	}
+	
+	
+	public boolean creerEtAjouterCompte()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("\n[Creation du compte]\n");
+		
+		System.out.print("Solde : ");
+		Double solde = sc.nextDouble();
+		
+		Account c1 = new Account();
+		c1.setBalance(solde);
+		
+		if( !(chercherCompte2( c1.getId() ) ) )
+		{
+			for(int i = 0 ; i<this.getBankAgency().getAgencyAccount().length ; i++)
+			{
+				if(this.getBankAgency().getAgencyAccount()[i] == null)
+				{
+					this.getBankAgency().setAgencyAccount(c1);
+					return true;
+				}
+			}
+		}
+		return false;
+		
+	}
+	
+	
+
+	
+	public boolean creerEtAjouterClient()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("\n[Creation du client]\n");
+		
+		System.out.print("FirstName : ");
+		String fn = sc.next();
+		
+		System.out.print("LirstName : ");
+		String ln = sc.next();
+		
+		System.out.print("Email : ");
+		String email = sc.next();
+		
+		System.out.print("Tel : ");
+		String tel = sc.next();
+		
+		System.out.print("CIN : ");
+		String cin = sc.next();
+		
+		Client client1 = new Client(fn,ln);
+		client1.setEmail(email);
+		client1.setIdentity(cin);
+		client1.setTel(tel);
+		
+		if( !(chercherClient(client1.getId())) )
+		{
+			for(int i = 0 ; i < this.getBankAgency().getAgencyClient().length ; i++)
+			{
+				if(this.getBankAgency().getAgencyClient()[i] == null)
+				{
+					this.getBankAgency().setAgencyClient(client1);
+					return true;
+				}
+			}
+		}
+		return false;
+		
+	}
+	
+	public boolean lierCompteAuClient (int idClient, int idCompte)
+	{
+		if(chercherClient(idClient))
+		{
+			if(chercherCompte2(idCompte))
+			{
+				this.chercherCompteObjet(idCompte).setOwner(this.chercherClientObjet(idClient));
+				if(this.chercherClientObjet(idClient).setAccounts(this.chercherCompteObjet(idCompte)))
+					return true;
+				else return false;
+			}
+			return false;
+		}
+		
+		return false;	
+	}
+	
+	
+	public void consulterDetailCompte(int id)
+	{
+		if(this.chercherCompte2(id))
+		{
+			System.out.println(this.getBankAgency());
+			System.out.println(this.chercherCompteObjet(id).showInformation());
+			for(int i = 0 ; i < this.chercherCompteObjet(id).getLogsNumber() ; i++)
+			{
+				System.out.print("--------------------------------------");
+				System.out.println("\nLog "+ (i+1) +" : "+ this.chercherCompteObjet(id).getLogs()[i]);
+			}	
+		}	
+		else System.out.println("Compte n'existe pas");
+	}
+	
+	
+	public void consulterDetailClient(int id)
+	{
+		if(this.chercherClient(id))
+		{
+			System.out.println(this.getBankAgency());
+			System.out.println(this.chercherClientObjet(id));
+			for(int i = 0 ; i < this.chercherClientObjet(id).getAccounts().length ; i++)
+			{
+				if(this.chercherClientObjet(id).getAccounts()[i] != null)
+				{
+					
+					System.out.println(this.chercherClientObjet(id).getAccounts()[i]);
+				}
+				
+			}	
+		}
+		
+		else System.out.println("Client n'existe pas");
+	}
+	
+	
+	public boolean modifierCompte(int id)
+	{
+		if(this.chercherCompte2(id))
+		{
+			Scanner sc = new Scanner(System.in);
+			System.out.println("\n[Modification du compte]\n");
+			System.out.print("Solde : ");
+			Double solde = sc.nextDouble();
+			this.chercherCompteObjet(id).setBalance(solde);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public boolean modifierClient(int id)
+	{
+		if(this.chercherClient(id))
+		{
+			Scanner sc = new Scanner(System.in);
+			System.out.println("\n[Modification du client]\n");
+			System.out.print("FirstName : ");
+			String fn = sc.next();
+			
+			System.out.print("LirstName : ");
+			String ln = sc.next();
+			
+			System.out.print("Email : ");
+			String email = sc.next();
+			
+			System.out.print("Tel : ");
+			String tel = sc.next();
+			
+			System.out.print("CIN : ");
+			String cin = sc.next();
+			this.chercherClientObjet(id).setFirstName(fn);
+			this.chercherClientObjet(id).setLastName(ln);
+			this.chercherClientObjet(id).setEmail(email);
+			this.chercherClientObjet(id).setTel(tel);
+			this.chercherClientObjet(id).setIdentity(cin);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+	public static void afficherMenu()
+	{
+		System.out.println("\n***************************************");
+		System.out.println("Menu :                                   ");
+		System.out.println("Creation d'un compte     : 1             ");
+		System.out.println("Afficher les comptes     : 2             ");
+		System.out.println("Chercher un compte       : 3             ");
+		System.out.println("Supprimer un compte      : 4             ");
+		System.out.println("Modification du compte   : 5             ");
+		System.out.println("Verser vers un compte    : 6             ");
+		System.out.println("Retirer dans compte      : 7             ");
+		System.out.println("Effectuer un virement    : 8             ");
+		
+		System.out.println("Pour sortir              : 0             ");
+		System.out.println("*****************************************");
+	}
+	
+	public static void menu(int op)
+	{
+		
+	}
+
+	
+	
+	public static void main(String[] args) 
+	{
+		
+		Scanner sc = new Scanner(System.in);
+		int op; 
+		
+		BankAgency BA = new BankAgency("BankX");
+		BankService BS = new BankService();
+		BS.SetBankAgency(BA);
+		
+		do
+		{
+			afficherMenu();
+			System.out.print("\nOption : ");
+			op = sc.nextInt();
+			System.out.println("\n");
+			
+			
+			
+			
+			
+			switch(op) {
+			
+				case 1:
+					if(BS.creerEtAjouterCompte()) System.out.println("\n[le compte a ete cree]\n");
+					else System.out.println("\n[le compte n'a pas ete cree]\n");
+				break;
+				
+				
+				case 2:
+					if(BS.creerEtAjouterClient()) System.out.println("\n[le client a ete cree]\n");
+					else System.out.println("\n[le client n'a pas ete cree]\n");
+				break;
+				
+				
+				case 3:
+					Scanner sc1 =new Scanner(System.in);
+					System.out.print("\nEntrer Id du compte : ");
+					int idCompte1 = sc1.nextInt();
+					System.out.print("\nEntrer Id du client : ");
+					int idclient1 = sc1.nextInt();
+					
+					
+					if(BS.lierCompteAuClient(idclient1, idCompte1)) System.out.println("\n[le client a  ete lie a son compte]\n");
+					else System.out.println("\n[le client n'a pas ete  lie a son compte]\n");
+				break;
+				
+				
+				case 4:
+					Scanner sc2 =new Scanner(System.in);
+					System.out.print("\nEntrer Id du compte : ");
+					int idCompte2 = sc2.nextInt();
+					
+					
+					
+					if(BS.chercherCompteObjet(idCompte2) != null) 
+					{
+						System.out.println(BS.chercherCompteObjet(idCompte2));
+						System.out.print("\nConsulter les details du compte  1/0 : " );
+						int x = sc2.nextInt();
+						System.out.println("\n");
+						if(x == 1)  BS.consulterDetailCompte(idCompte2);
+						else break;
+					}
+					else System.out.println("\n[le compte n'existe pas]\n");
+				break;
+				
+			}
+			
+		}while( op != 0 );
+		
+		
+		/*
+		BankAgency BA = new BankAgency("BankX");
+		BankService BS = new BankService();
+		BS.SetBankAgency(BA);
+		
+		BS.creerEtAjouterCompte();
+		//if(BS.chercherCompte2(1))
+		System.out.println(BS.chercherCompteObjet(1));
+		*/
+	}
+}

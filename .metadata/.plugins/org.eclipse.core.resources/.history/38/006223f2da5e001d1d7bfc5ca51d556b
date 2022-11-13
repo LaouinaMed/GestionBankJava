@@ -1,0 +1,81 @@
+package Users;
+import java.util.Scanner;
+
+import entities.Account;
+import entities.BankAgency;
+import service.*;
+
+public class Admin extends User {
+	
+	//private static String usrename ="admin";
+	//private static String password ="admin";
+	
+	private BankService bankService;
+	
+	public Admin(BankService bankService)
+	{
+		super();
+		this.bankService = bankService;
+	}
+	
+	public BankService getBankService() { return bankService;}
+	
+	//public String getUserName() {return usrename; }
+	//public String getPassword() {return password; }
+	
+	public static void afficherMenuCrud()
+	{
+		System.out.println("\n***************************************");
+		System.out.println("Menu Crud :                                   ");
+		System.out.println("Creation d'un compte           : 1             ");
+		System.out.println("Creation d'un client           : 2             ");
+		System.out.println("Lier un client avec un compte  : 3             ");
+		System.out.println("Chercher un compte             : 4             ");
+		System.out.println("Chercher un client             : 5             ");
+		System.out.println("Modification du compte         : 6             ");
+		System.out.println("Modification du compte         : 7             ");
+		System.out.println("Suppression du compte          : 8             ");
+		//System.out.println("Verser vers un compte    : 6             ");
+		//System.out.println("Retirer dans compte      : 7             ");
+		//System.out.println("Effectuer un virement    : 8             ");
+		
+		System.out.println("Pour sortir                    : 0             ");
+		System.out.println("*****************************************");
+	}
+	
+	
+	
+	public static void afficherMenuTrasction()
+	{
+		System.out.println("\n***************************************");
+		System.out.println("Menu Transaction :                                   ");
+		System.out.println("Session Admin            : 1             ");
+		System.out.println("Verser vers un compte    : 2             ");
+		System.out.println("Retirer dans compte      : 3             ");
+		System.out.println("Effectuer un virement    : 4             ");
+		
+		System.out.println("Pour sortir              : 0             ");
+		System.out.println("*****************************************");
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		
+		
+			
+		
+		
+	
+	/*	
+		User u = new User();
+		//u.SetBankAgency(admin.getBankService().getBankAgency());
+		
+		//u.verser(500.0, 1);
+		u.SetBankAgency(admin.getBankService().getBankAgency());
+		admin.verser(155.0, 1);
+		System.out.println(u.getBankAgency().getAgencyAccount()[0]);
+		//System.out.println(admin.getBankService().getBankAgency().getAgencyAccount()[0]);
+*/
+	}
+}

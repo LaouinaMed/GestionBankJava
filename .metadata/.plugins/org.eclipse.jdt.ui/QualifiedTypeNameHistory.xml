@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="entities.Client"/>
+    <fullyQualifiedTypeName name="entities.Bank"/>
+    <fullyQualifiedTypeName name="service.AccountService"/>
+    <fullyQualifiedTypeName name="service.BankService"/>
+    <fullyQualifiedTypeName name="entities.BankAgency"/>
+    <fullyQualifiedTypeName name="entities.Account"/>
+</qualifiedTypeNameHistroy>

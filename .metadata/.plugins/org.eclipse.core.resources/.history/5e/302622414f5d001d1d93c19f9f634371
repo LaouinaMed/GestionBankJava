@@ -1,0 +1,150 @@
+package service;
+import  entities.*;
+
+public class AccountService {
+	
+	private Account[] accounts = new Account[100];
+	
+	public AccountService() {}
+	
+	public boolean setAccounts(Account account)
+	{
+		for(int i = 0 ; i < accounts.length ;i++)
+		{
+			if(accounts[i]== null)
+			{
+				this.accounts[i] = account;
+				return true;
+		
+			}
+				
+		}
+		 System.out.println("Le compte n'a pas ete ajouter");
+		 return false;
+	}
+	
+	
+	public Account[] getAccounts()
+	{
+		return accounts;
+		
+	}
+	
+	
+	public boolean chercherCompte( int id)
+	{
+		for(int i = 0 ; i < this.getAccounts().length ; i++)
+		{
+			if(this.getAccounts()[i] != null && this.getAccounts()[i].getId() == id)
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean verser(Double montant , int id)
+	{
+		if(this.chercherCompte(id) && montant > 0)
+		{
+			for(int i = 0 ; i < this.getAccounts().length ; i++)
+			{
+				if (this.getAccounts()[i] != null && this.getAccounts()[i].getId() == id &&
+						this.getAccounts()[i].getLogsNumber() < 5)
+				{
+					this.getAccounts()[i].setBalance(this.getAccounts()[i].getBalance() + montant);
+					this.getAccounts()[i].setLogs("a eu un versement");
+					return true;
+				}	
+			}
+		}
+		return false;
+	}
+	
+	
+	public boolean retirer(double montant, int id)
+	{
+		if(this.chercherCompte(id) && montant > 0)
+		{
+			for(int i = 0 ; i < this.getAccounts().length ; i++)
+			{
+				if(this.getAccounts()[i] != null && this.getAccounts()[i].getId() == id && 
+						this.getAccounts()[i].getBalance() >= montant && this.getAccounts()[i].getLogsNumber() < 5)
+		
+				{
+					this.getAccounts()[i].setBalance(this.getAccounts()[i].getBalance() - montant); 
+					this.getAccounts()[i].setLogs("a fait retierement");	
+					return true;
+				}
+					
+			}			
+		}
+		
+		 return false;
+	}
+
+	public boolean virement(Double montant , int id1 , int id2)
+	{
+		if(this.chercherCompte(1) && montant > 0 && this.chercherCompte(id2))
+		{
+			for(int i = 0 ; i < this.getAccounts().length ; i++)
+			{
+				if(this.getAccounts()[i] != null && this.getAccounts()[i].getId() == id1 &&
+						this.getAccounts()[i].getBalance() >= montant && this.getAccounts()[i].getLogsNumber() < 5)
+				{
+					this.getAccounts()[i].setBalance(this.getAccounts()[i].getBalance() - montant); 
+					this.getAccounts()[i].setLogs("a fait Virement ");
+					
+					for(int j = 0 ; j < this.getAccounts().length ; j++)
+					{
+						if( this.getAccounts()[j] != null && this.getAccounts()[j].getId() == id2 )
+						{
+							this.getAccounts()[j].setBalance(this.getAccounts()[j].getBalance() + montant);
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	
+	
+	
+	
+	public static void main(String[] args)
+	{
+		
+		Account c1 = new Account();
+		c1.setBalance(2000.0);
+		
+		
+		Account c2 = new Account();
+		
+		AccountService s = new AccountService();
+		
+		s.setAccounts(c1);
+		s.setAccounts(c2);
+		
+		s.verser(500.0, 2);
+		s.verser(500.0, 2);
+		s.verser(500.0, 2);
+		
+		s.virement(1000.0, 1, 2);
+		
+		System.out.println(s.getAccounts()[0]);
+		
+		//if(s.retirer(100.0, 2)) System.out.println("hello");
+		//else System.out.println("nom");
+		
+		
+		
+		
+		
+		
+		
+		
+		);
+	}
+		
+
+}

@@ -1,0 +1,19 @@
+package Users;
+
+import service.AccountService;
+
+public class User extends AccountService{
+	
+	public User() {}
+	
+	
+	public static void main(String[] args) {
+		
+		//User u = new User();
+		
+	
+	}
+
+}
+
+

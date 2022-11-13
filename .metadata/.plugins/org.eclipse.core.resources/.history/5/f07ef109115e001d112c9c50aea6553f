@@ -1,0 +1,179 @@
+package service;
+import  entities.*;
+import  service.*;
+
+public class AccountService {
+	
+	//private Account[] accounts = new Account[100];
+	private BankAgency bankAgency ;
+	
+	public AccountService() {}
+	/*
+	public boolean setAccounts(Account account)
+	{
+		for(int i = 0 ; i < accounts.length ;i++)
+		{
+			if(accounts[i]== null)
+			{
+				this.accounts[i] = account;
+				return true;
+		
+			}
+				
+		}
+		 System.out.println("Le compte n'a pas ete ajouter");
+		 return false;
+	}
+	
+	
+	public Account[] getAccounts()
+	{
+		return accounts;
+		
+	}
+	*/
+	
+	public void SetBankAgency(BankAgency bankAgency)
+	{
+		this.bankAgency = bankAgency;
+	}
+	
+	public BankAgency getBankAgency()
+	{
+		return bankAgency;
+		
+	}
+	
+	public boolean chercherCompte( int id)
+	{
+		for(int i = 0 ; i < this.getBankAgency().getAgencyAccount().length ; i++)
+		{
+			if(this.getBankAgency().getAgencyAccount()[i] != null && this.getBankAgency().getAgencyAccount()[i].getId() == id)
+				return true;
+		}
+		return false;
+	}
+	
+	
+	public Account chercherCompteObjet( int id)
+	{
+		for(int i = 0 ; i < this.getBankAgency().getAgencyAccount().length ; i++)
+		{
+			if(this.getBankAgency().getAgencyAccount()[i] != null && this.getBankAgency().getAgencyAccount()[i].getId() == id)
+				return this.getBankAgency().getAgencyAccount()[i];
+		}
+		return null;
+	}
+	
+	
+	public boolean verser(Double montant , int id)
+	{
+		if(this.chercherCompte(id) && montant > 0 && this.chercherCompteObjet(id).getLogsNumber() < 5)
+		{
+			/*
+			for(int i = 0 ; i < this.getBankAgency().getAgencyAccount().length ; i++)
+			{
+				if (this.getBankAgency().getAgencyAccount()[i] != null && this.getBankAgency().getAgencyAccount()[i].getId() == id &&
+						this.getBankAgency().getAgencyAccount()[i].getLogsNumber() < 5)
+				{
+					this.getAccounts()[i].setBalance(this.getAccounts()[i].getBalance() + montant);
+					this.getAccounts()[i].setLogs("a eu un versement");
+					return true;
+				}	
+			}
+			*/
+			this.chercherCompteObjet(id).setBalance(this.chercherCompteObjet(id).getBalance() + montant);
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	public boolean retirer(double montant, int id)
+	{
+		if(this.chercherCompte(id) && montant > 0)
+		{
+			for(int i = 0 ; i < this.getAccounts().length ; i++)
+			{
+				if(this.getAccounts()[i] != null && this.getAccounts()[i].getId() == id && 
+						this.getAccounts()[i].getBalance() >= montant && this.getAccounts()[i].getLogsNumber() < 5)
+		
+				{
+					this.getAccounts()[i].setBalance(this.getAccounts()[i].getBalance() - montant); 
+					this.getAccounts()[i].setLogs("a fait retierement");	
+					return true;
+				}
+					
+			}			
+		}
+		
+		 return false;
+	}
+
+	public boolean virement(Double montant , int id1 , int id2)
+	{
+		if(this.chercherCompte(1) && montant > 0 && this.chercherCompte(id2))
+		{
+			for(int i = 0 ; i < this.getAccounts().length ; i++)
+			{
+				if(this.getAccounts()[i] != null && this.getAccounts()[i].getId() == id1 &&
+						this.getAccounts()[i].getBalance() >= montant && this.getAccounts()[i].getLogsNumber() < 5)
+				{
+					this.getAccounts()[i].setBalance(this.getAccounts()[i].getBalance() - montant); 
+					this.getAccounts()[i].setLogs("a fait Virement ");
+					
+					for(int j = 0 ; j < this.getAccounts().length ; j++)
+					{
+						if( this.getAccounts()[j] != null && this.getAccounts()[j].getId() == id2 )
+						{
+							this.getAccounts()[j].setBalance(this.getAccounts()[j].getBalance() + montant);
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	*/
+	
+	
+	
+	
+	public static void main(String[] args)
+	{
+		
+		Account c1 = new Account();
+		c1.setBalance(2000.0);
+		
+		
+		Account c2 = new Account();
+		
+		BankAgency B = new BankAgency("bankx");
+		
+		AccountService X = new AccountService();
+		
+		X.SetBankAgency(B);
+		
+		X.getBankAgency().setAgencyAccount(c1);
+		X.getBankAgency().setAgencyAccount(c2);
+		
+		X.verser(1500.0, 1);
+		
+		System.out.println(X.getBankAgency().getAgencyAccount()[0]);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+		
+
+}

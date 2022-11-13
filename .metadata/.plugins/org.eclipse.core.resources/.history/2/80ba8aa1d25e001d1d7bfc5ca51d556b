@@ -1,0 +1,147 @@
+package controller;
+import java.util.Scanner;
+
+import entities.BankAgency;
+import service.*;
+public class Main {
+	
+	
+	public static void afficherMenu()
+	{
+		System.out.println("\n***************************************");
+		System.out.println("Menu :                                   ");
+		System.out.println("Creation d'un compte           : 1             ");
+		System.out.println("Creation d'un client           : 2             ");
+		System.out.println("Lier un client avec un compte  : 3             ");
+		System.out.println("Chercher un compte             : 4             ");
+		System.out.println("Chercher un client             : 5             ");
+		System.out.println("Modification du compte         : 6             ");
+		System.out.println("Modification du compte         : 7             ");
+		System.out.println("Suppression du compte          : 8             ");
+		//System.out.println("Verser vers un compte    : 6             ");
+		//System.out.println("Retirer dans compte      : 7             ");
+		//System.out.println("Effectuer un virement    : 8             ");
+		
+		System.out.println("Pour sortir                    : 0             ");
+		System.out.println("*****************************************");
+	}
+	
+	public static void main(String[] args) 
+	{
+		BankAgency BA = new BankAgency("BankX");
+		BankService BS = new BankService();
+		BS.SetBankAgency(BA);
+		
+		Scanner sc = new Scanner(System.in);
+		int op; 
+		
+		do
+		{
+			afficherMenu();
+			System.out.print("\nOption : ");
+			op = sc.nextInt();
+			System.out.println("\n");
+			
+			
+			switch(op) {
+			
+			case 1:
+				if(BS.creerEtAjouterCompte()) System.out.println("\n[le compte a ete cree]\n");
+				else System.out.println("\n[le compte n'a pas ete cree]\n");
+			break;
+			
+			
+			case 2:
+				if(BS.creerEtAjouterClient()) System.out.println("\n[le client a ete cree]\n");
+				else System.out.println("\n[le client n'a pas ete cree]\n");
+			break;
+			
+			
+			case 3:
+				Scanner sc1 =new Scanner(System.in);
+				System.out.print("\nEntrer Id du compte : ");
+				int idCompte1 = sc1.nextInt();
+				System.out.print("\nEntrer Id du client : ");
+				int idclient1 = sc1.nextInt();
+				
+				
+				if(BS.lierCompteAuClient(idclient1, idCompte1)) System.out.println("\n[le client a  ete lie a son compte]\n");
+				else System.out.println("\n[le client n'a pas ete  lie a son compte]\n");
+			break;
+			
+			
+			case 4:
+				Scanner sc2 =new Scanner(System.in);
+				System.out.print("\nEntrer Id du compte : ");
+				int idCompte2 = sc2.nextInt();
+				
+				
+				
+				if(BS.chercherCompteObjet(idCompte2) != null) 
+				{
+					System.out.println(BS.chercherCompteObjet(idCompte2));
+					System.out.print("\nConsulter les details du compte  1/0 : " );
+					int x = sc2.nextInt();
+					System.out.println("\n");
+					if(x == 1)  BS.consulterDetailCompte(idCompte2);
+					else break;
+				}
+				else System.out.println("\n[le compte n'existe pas]\n");
+			break;
+			
+			case 5:
+				Scanner sc3 =new Scanner(System.in);
+				System.out.print("\nEntrer Id du client : ");
+				int idClient3 = sc3.nextInt();
+				
+				
+				
+				if(BS.chercherClientObjet(idClient3) != null) 
+				{
+					System.out.println(BS.chercherClientObjet(idClient3));
+					System.out.print("\nConsulter les details du compte  1/0 : " );
+					int x = sc3.nextInt();
+					System.out.println("\n");
+					if(x == 1)  BS.consulterDetailClient(idClient3);
+					else break;
+				}
+				else System.out.println("\n[le client n'existe pas]\n");
+			break;
+			
+			
+			case 6:
+				Scanner sc4 =new Scanner(System.in);
+				System.out.print("\nEntrer Id du compte : ");
+				int idClient4 = sc4.nextInt();
+				
+				if(BS.modifierCompte(idClient4)) System.out.println("\n[le compte a ete modofier]\n");
+				else System.out.println("\n[le compte n'a pas ete cree]\n");
+			break;
+			
+			case 7:
+				Scanner sc5 =new Scanner(System.in);
+				System.out.print("\nEntrer Id du compte : ");
+				int idClient5 = sc5.nextInt();
+				
+				if(BS.modifierClient(idClient5)) System.out.println("\n[le client a ete modifier]\n");
+				else System.out.println("\n[le compte n'a pas ete modifier]\n");
+			break;
+			
+			
+			case 8:
+				Scanner sc6 =new Scanner(System.in);
+				System.out.print("\nEntrer Id du compte : ");
+				int idClient6 = sc6.nextInt();
+				
+				if(BS.supprimerCompte(idClient6)) System.out.println("\n[le compte a ete supprimer]\n");
+				else System.out.println("\n[le compte n'a pas ete supprimer]\n");
+			break;
+			
+		}
+			
+		}while( op != 0 );
+		
+		
+	}
+
+}
